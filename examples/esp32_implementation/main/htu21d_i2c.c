@@ -34,6 +34,8 @@
 #include "htu21d_i2c.h" 
 #include "htu21d_i2c_hal.h" 
 
+#include "stdio.h"
+
 htu21d_err_t htu21d_i2c_write_config(htu21d_config_t dt)
 {
     uint8_t reg = REG_USER_WRITE;
@@ -57,25 +59,34 @@ htu21d_err_t htu21d_i2c_read_config(uint8_t *dt)
 htu21d_err_t htu21d_i2c_reset()
 {
     uint8_t reg = REG_SOFT_RESET;
-    htu21d_err_t err = htu21d_i2c_hal_write(I2C_ADDRESS_HTU21D, reg, 1);
-    htu21d_i2c_hal_ms_delay(4);
+    htu21d_err_t err = htu21d_i2c_hal_write(I2C_ADDRESS_HTU21D, &reg, 1);
     return err;
 } 
 
 htu21d_err_t htu21d_i2c_temp_read(uint16_t *dt)
 {
     uint8_t reg = REG_RTEMP_READ_HOLD;
-    uint16_t data;
-    htu21d_err_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, &data, 1);
-    *dt = RTEMP_TO_TEMP(data); 
+    uint8_t data[3];
+    htu21d_err_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, data, 3);
+    uint16_t data_raw = (data[0] << 8) + data[1];
+    uint8_t crc = data[2];
+    printf("Temperature raw MSB: %d\n", data[0]);
+    printf("Temperature raw LSB: %d\n", data[1]);
+    printf("Temperature raw: %d\n", data_raw);
+    *dt = RTEMP_TO_TEMP(data_raw); 
     return err;
 }
 
 htu21d_err_t htu21d_i2c_hum_read(uint16_t *dt)
 {
     uint8_t reg = REG_RHUM_READ_HOLD;
-    uint8_t data;
-    htu21d_err_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, &data, 1);
-    *dt = RTEMP_TO_TEMP(data);
+    uint8_t data[3];
+    htu21d_err_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, data, 3);
+    uint16_t data_raw = (data[0] << 8) + data[1];
+    uint8_t crc = data[2];
+    printf("Humidity raw MSB: %d\n", data[0]);
+    printf("Humidity raw LSB: %d\n", data[1]);
+    printf("Humidity raw: %d\n", data_raw);
+    *dt = RHUM_TO_HUM(data_raw);
     return err;
 }

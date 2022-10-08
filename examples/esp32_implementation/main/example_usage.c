@@ -46,10 +46,13 @@ void app_main(void)
 
     htu21d_i2c_hal_init();
 
-    //i2c_scan();
-    
-    err = htu21d_i2c_read_config(&dev_cfg);
-    
+    htu21d_i2c_hal_ms_delay(30);
+
+    err = htu21d_i2c_reset();
+    if(err != ESP_OK) ESP_LOGE(TAG, "Error resetting the device!");
+    htu21d_i2c_hal_ms_delay(30);
+
+    err += htu21d_i2c_read_config(&dev_cfg);
     if(err != ESP_OK) ESP_LOGE(TAG, "Error setting the device!");
     if (err == ESP_OK)
     {
@@ -57,8 +60,11 @@ void app_main(void)
         while(1)
         {
             //Read temp and humidity
+            htu21d_i2c_temp_read(&htu_data.temp);
+            htu21d_i2c_hum_read(&htu_data.hum);
             ESP_LOGI(TAG, "Temperature: %d", htu_data.temp);
-            vTaskDelay(pdMS_TO_TICKS(2000));
+            ESP_LOGI(TAG, "Humidity: %d", htu_data.hum);
+            vTaskDelay(pdMS_TO_TICKS(5000));
         }
     }
     else{
