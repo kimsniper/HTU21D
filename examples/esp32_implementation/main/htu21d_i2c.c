@@ -63,12 +63,13 @@ htu21d_err_t htu21d_i2c_reset()
     return err;
 } 
 
-htu21d_err_t htu21d_i2c_temp_read(uint16_t *dt)
+htu21d_err_t htu21d_i2c_temp_read(float *dt)
 {
     uint8_t reg = REG_RTEMP_READ_HOLD;
     uint8_t data[3];
     htu21d_err_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, data, 3);
-    uint16_t data_raw = (data[0] << 8) + data[1];
+    uint16_t data_raw = (data[0] << 8) | data[1];
+    data_raw &= ~(1 << 1 | 1 << 0);
     uint8_t crc = data[2];
     printf("Temperature raw MSB: %d\n", data[0]);
     printf("Temperature raw LSB: %d\n", data[1]);
@@ -77,12 +78,13 @@ htu21d_err_t htu21d_i2c_temp_read(uint16_t *dt)
     return err;
 }
 
-htu21d_err_t htu21d_i2c_hum_read(uint16_t *dt)
+htu21d_err_t htu21d_i2c_hum_read(float *dt)
 {
     uint8_t reg = REG_RHUM_READ_HOLD;
     uint8_t data[3];
     htu21d_err_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, data, 3);
-    uint16_t data_raw = (data[0] << 8) + data[1];
+    uint16_t data_raw = (data[0] << 8) | data[1];
+    data_raw &= ~(1 << 1 | 1 << 0);
     uint8_t crc = data[2];
     printf("Humidity raw MSB: %d\n", data[0]);
     printf("Humidity raw LSB: %d\n", data[1]);

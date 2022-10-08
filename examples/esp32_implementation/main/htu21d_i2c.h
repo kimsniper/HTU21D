@@ -37,15 +37,11 @@ extern "C" {
 #endif
 
 #include "htu21d_i2c_hal.h" 
+#include <math.h>
 
 typedef struct{
-    uint16_t raw_temp;
-    uint16_t raw_hum;
-} htu21d_rdata_t;
-
-typedef struct{
-    uint16_t temp;
-    uint16_t hum;
+    float temp;
+    float hum;
 } htu21d_data_t;
 
 typedef struct{
@@ -79,8 +75,8 @@ typedef struct{
  * @brief htu21d formula.
  * @details Humidity and Temperature conversion formula
  */
-#define RHUM_TO_HUM(_rhum)              (125 * (_rhum/(2^16))) - 6
-#define RTEMP_TO_TEMP(_rtemp)           (175.72 * (_rtemp/(2^16))) - 46.85
+#define RHUM_TO_HUM(_rhum)              (125 * (_rhum/(pow(2,16)))) - 6
+#define RTEMP_TO_TEMP(_rtemp)           (175.72 * (_rtemp/(pow(2,16)))) - 46.85
 
 /**
  * @brief htu21d parameter.
@@ -104,13 +100,13 @@ htu21d_err_t htu21d_i2c_reset();
  * @brief htu21d sensor temperature read.
  * @details Read temperature in deg C.
  */
-htu21d_err_t htu21d_i2c_temp_read(uint16_t *dt);
+htu21d_err_t htu21d_i2c_temp_read(float *dt);
 
 /**
  * @brief htu21d sensor relarive humidity read.
  * @details Read relative humidity in %.
  */
-htu21d_err_t htu21d_i2c_hum_read(uint16_t *dt);
+htu21d_err_t htu21d_i2c_hum_read(float *dt);
 
 #ifdef __cplusplus
 }
