@@ -51,8 +51,9 @@ void app_main(void)
     err = htu21d_i2c_reset();
     if(err != ESP_OK) ESP_LOGE(TAG, "Error resetting the device!");
     htu21d_i2c_hal_ms_delay(30);
-
+    
     err += htu21d_i2c_read_config(&dev_cfg);
+    ESP_LOGW(TAG, "Config: %d", dev_cfg);
     if(err != ESP_OK) ESP_LOGE(TAG, "Error setting the device!");
     if (err == ESP_OK)
     {
