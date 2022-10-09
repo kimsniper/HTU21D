@@ -53,8 +53,8 @@ htu21d_err_t htu21d_i2c_hal_init()
         .mode = I2C_MODE_MASTER,
         .sda_io_num = I2C_MASTER_SDA_IO,
         .scl_io_num = I2C_MASTER_SCL_IO,
-        .sda_pullup_en = GPIO_PULLUP_ENABLE,    //Disable this if I2C lines have pull up resistor in place
-        .scl_pullup_en = GPIO_PULLUP_ENABLE,    //Disable this if I2C lines have pull up resistor in place
+        .sda_pullup_en = GPIO_PULLUP_DISABLE,    //Disable this if I2C lines have pull up resistor in place
+        .scl_pullup_en = GPIO_PULLUP_DISABLE,    //Disable this if I2C lines have pull up resistor in place
         .master.clk_speed = I2C_MASTER_FREQ_HZ,
     };
 
@@ -69,15 +69,23 @@ htu21d_err_t htu21d_i2c_hal_read(uint8_t address, uint8_t *reg, uint8_t *data, u
 {
     int err = HTU21D_OK;
 
-    i2c_cmd_handle_t cmd = i2c_cmd_link_create();
+	i2c_cmd_handle_t cmd = i2c_cmd_link_create();
 	i2c_master_start(cmd);
-	i2c_master_write_byte(cmd, address << 1 | I2C_MASTER_WRITE, 1);
+	i2c_master_write_byte(cmd, (address << 1) | I2C_MASTER_WRITE, 1);
 	i2c_master_write(cmd, reg, 1, true);
+	i2c_master_stop(cmd);
+	err = i2c_master_cmd_begin(I2C_NUM_0, cmd, I2C_MASTER_TIMEOUT_MS / portTICK_RATE_MS);
+	i2c_cmd_link_delete(cmd);
+	if(err != HTU21D_OK) return err;
+
+	htu21d_i2c_hal_ms_delay(60);
+
+	cmd = i2c_cmd_link_create();
 	i2c_master_start(cmd);
 	i2c_master_write_byte(cmd, address << 1 | I2C_MASTER_READ, 1);
 	i2c_master_read(cmd, data, count, I2C_MASTER_LAST_NACK);
 	i2c_master_stop(cmd);
-	err = i2c_master_cmd_begin(I2C_NUM_0, cmd, I2C_MASTER_TIMEOUT_MS / portTICK_RATE_MS);
+	err += i2c_master_cmd_begin(I2C_NUM_0, cmd, I2C_MASTER_TIMEOUT_MS / portTICK_RATE_MS);
 	i2c_cmd_link_delete(cmd);
 
     return err == HTU21D_OK ? HTU21D_OK :  HTU21D_ERR;

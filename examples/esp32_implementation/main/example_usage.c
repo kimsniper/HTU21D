@@ -50,16 +50,7 @@ void app_main(void)
 
     err = htu21d_i2c_reset();
     if(err != ESP_OK) ESP_LOGE(TAG, "Error resetting the device!");
-    htu21d_i2c_hal_ms_delay(30);
-    
-    //htu21d_i2c_set_resolution(REG_RESOLUTION_HUM8_TEMP12);
-
-    err += htu21d_i2c_read_config(&dev_cfg);
-    ESP_LOGW(TAG, "Config: %d", dev_cfg);
-    
-    uint8_t res;
-    htu21d_i2c_get_resolution(&res);
-    ESP_LOGW(TAG, "Resolution: 0x%02X", res);
+    htu21d_i2c_hal_ms_delay(30);   
     
     if(err != ESP_OK) ESP_LOGE(TAG, "Error setting the device!");
     if (err == ESP_OK)
@@ -68,11 +59,17 @@ void app_main(void)
         while(1)
         {
             //Read temp and humidity
-            htu21d_i2c_temp_read(&htu_data.temp);
-            htu21d_i2c_hum_read(&htu_data.hum);
-            ESP_LOGI(TAG, "Temperature: %.01f°C", htu_data.temp);
-            ESP_LOGI(TAG, "Humidity: %.01f%%", htu_data.hum);
-            vTaskDelay(pdMS_TO_TICKS(1000));
+            err = htu21d_i2c_temp_read(&htu_data.temp);
+            err += htu21d_i2c_hum_read(&htu_data.hum);
+            if(err == ESP_OK)
+            {
+                ESP_LOGI(TAG, "Temperature: %.01f°C", htu_data.temp);
+                ESP_LOGI(TAG, "Humidity: %.01f%%", htu_data.hum);
+            }
+            else{
+                ESP_LOGE(TAG, "Data read error!");
+            }
+            vTaskDelay(pdMS_TO_TICKS(2000));
         }
     }
     else{

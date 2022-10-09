@@ -57,7 +57,7 @@ typedef struct{
  * @brief htu21d device address.
  * @details htu21d I2C slave address.
  */
-#define I2C_ADDRESS_HTU21D      0x40
+#define I2C_ADDRESS_HTU21D              0x40
 
 /**
  * @brief htu21d command code registers.
