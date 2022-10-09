@@ -42,7 +42,6 @@ void app_main(void)
 {
     esp_err_t err;
     htu21d_data_t htu_data = {0};
-    uint8_t dev_cfg = 0;
 
     htu21d_i2c_hal_init();
 
