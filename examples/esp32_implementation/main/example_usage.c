@@ -70,8 +70,8 @@ void app_main(void)
             //Read temp and humidity
             htu21d_i2c_temp_read(&htu_data.temp);
             htu21d_i2c_hum_read(&htu_data.hum);
-            ESP_LOGI(TAG, "Temperature: %.02f°C", htu_data.temp);
-            ESP_LOGI(TAG, "Humidity: %.02f%%", htu_data.hum);
+            ESP_LOGI(TAG, "Temperature: %.01f°C", htu_data.temp);
+            ESP_LOGI(TAG, "Humidity: %.01f%%", htu_data.hum);
             vTaskDelay(pdMS_TO_TICKS(1000));
         }
     }
