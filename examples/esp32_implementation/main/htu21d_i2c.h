@@ -72,6 +72,15 @@ typedef struct{
 #define REG_SOFT_RESET                  0xFE
 
 /**
+ * @brief htu21d resolution code registers.
+ * @details Resolution Command write registers
+ */
+#define REG_RESOLUTION_HUM12_TEMP14     0x00
+#define REG_RESOLUTION_HUM8_TEMP12      0x01
+#define REG_RESOLUTION_HUM10_TEMP13     0x80
+#define REG_RESOLUTION_HUM11_TEMP11     0x81
+
+/**
  * @brief htu21d formula.
  * @details Humidity and Temperature conversion formula
  */
@@ -89,6 +98,18 @@ htu21d_err_t htu21d_i2c_write_config(htu21d_config_t dt);
  * @details Read device parameters.
  */
 htu21d_err_t htu21d_i2c_read_config(uint8_t *dt);
+
+/**
+ * @brief htu21d parameter.
+ * @details Set device resolution.
+ */
+htu21d_err_t htu21d_i2c_set_resolution(uint8_t dt);
+
+/**
+ * @brief htu21d parameter.
+ * @details Read device resolution.
+ */
+htu21d_err_t htu21d_i2c_get_resolution(uint8_t *dt);
 
 /**
  * @brief htu21d reset.

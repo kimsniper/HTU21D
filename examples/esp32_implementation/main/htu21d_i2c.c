@@ -56,6 +56,27 @@ htu21d_err_t htu21d_i2c_read_config(uint8_t *dt)
     return err;
 }
 
+htu21d_err_t htu21d_i2c_set_resolution(uint8_t dt)
+{
+    uint8_t reg = REG_USER_WRITE;
+    uint8_t data[2], cfg_def;
+    htu21d_err_t err = htu21d_i2c_read_config(&cfg_def);
+    if (err != HTU21D_OK) return err;
+    data[0] = reg;
+    data[1] = cfg_def | (dt & 0x81);
+    err = htu21d_i2c_hal_write(I2C_ADDRESS_HTU21D, data, 2);
+    return err;
+}
+
+htu21d_err_t htu21d_i2c_get_resolution(uint8_t *dt)
+{
+    uint8_t reg = REG_USER_READ;
+    uint8_t data;
+    htu21d_err_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, &data, 1);
+    *dt = data & 0x81;
+    return err;
+}
+
 htu21d_err_t htu21d_i2c_reset()
 {
     uint8_t reg = REG_SOFT_RESET;
