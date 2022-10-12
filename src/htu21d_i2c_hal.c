@@ -29,23 +29,42 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "stdint.h"
+#include "htu21d_i2c_hal.h" 
 
-#include "crc_calc.h"
+//Hardware Specific Components
 
-int crc_check(uint16_t dt, uint8_t crc)
-{    
-    uint16_t polynomial = CRC_POLYNOMIAL << (16 - CRC_POLYNOMIAL_WIDTH);
-    uint16_t result = dt;
-    uint16_t top_bit = 0x8000;
-    
-    for(int i=0;i<16;i++)
-    {
-        if(result & top_bit) result ^= polynomial;
-        result <<= 1; 
-    }
+//I2C User Defines
 
-    result >>= 8;
-    
-    return crc == result ? CRC_MATCH : CRC_NOTMATCH;
+htu21d_err_t htu21d_i2c_hal_init()
+{
+    int err = HTU21D_OK;
+
+    //User implementation here
+
+
+    return err == HTU21D_OK ? HTU21D_OK :  HTU21D_ERR;
+}
+
+htu21d_err_t htu21d_i2c_hal_read(uint8_t address, uint8_t *reg, uint8_t *data, uint16_t count)
+{
+    int err = HTU21D_OK;
+
+    //User implementation here
+
+
+    return err == HTU21D_OK ? HTU21D_OK :  HTU21D_ERR;
+}
+
+htu21d_err_t htu21d_i2c_hal_write(uint8_t address, uint8_t *data, uint16_t count)
+{
+    int err = HTU21D_OK;
+
+    //User implementation here
+
+
+    return err == HTU21D_OK ? HTU21D_OK :  HTU21D_ERR;
+}
+
+void htu21d_i2c_hal_ms_delay(uint32_t ms) {
+    //User implementation here
 }

@@ -29,23 +29,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "stdint.h"
+#ifndef MAIN_CRC_CALC
+#define MAIN_CRC_CALC
 
-#include "crc_calc.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-int crc_check(uint16_t dt, uint8_t crc)
-{    
-    uint16_t polynomial = CRC_POLYNOMIAL << (16 - CRC_POLYNOMIAL_WIDTH);
-    uint16_t result = dt;
-    uint16_t top_bit = 0x8000;
-    
-    for(int i=0;i<16;i++)
-    {
-        if(result & top_bit) result ^= polynomial;
-        result <<= 1; 
-    }
+//CRC error macros
+#define CRC_MATCH               1
+#define CRC_NOTMATCH            0
 
-    result >>= 8;
-    
-    return crc == result ? CRC_MATCH : CRC_NOTMATCH;
+//CRC macros
+#define CRC_POLYNOMIAL          0x131   // Generator Polynomial X^8 + X^5+ X^4+ 1
+#define CRC_POLYNOMIAL_WIDTH    9
+
+/**
+ * @brief Check if crc match.
+ * @details .
+ */
+int crc_check(uint16_t dt, uint8_t crc);
+
+#ifdef __cplusplus
 }
+#endif
+
+#endif /* MAIN_CRC_CALC */

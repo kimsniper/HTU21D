@@ -7,6 +7,7 @@
 //htu21d components
 #include "htu21d_i2c.h"
 #include "htu21d_i2c_hal.h"
+#include "crc_calc.h"
 
 static const char *TAG = "example_usage";
 

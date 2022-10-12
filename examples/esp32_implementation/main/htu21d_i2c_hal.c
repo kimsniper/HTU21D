@@ -47,6 +47,8 @@ htu21d_err_t htu21d_i2c_hal_init()
 {
     int err = HTU21D_OK;
 
+    //User implementation here
+
     int i2c_master_port = I2C_MASTER_NUM;
 
     i2c_config_t conf = {
@@ -62,12 +64,15 @@ htu21d_err_t htu21d_i2c_hal_init()
 
     err = i2c_driver_install(i2c_master_port, conf.mode, I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0);
 
+
     return err == HTU21D_OK ? HTU21D_OK :  HTU21D_ERR;
 }
 
 htu21d_err_t htu21d_i2c_hal_read(uint8_t address, uint8_t *reg, uint8_t *data, uint16_t count)
 {
     int err = HTU21D_OK;
+
+    //User implementation here
 
 	i2c_cmd_handle_t cmd = i2c_cmd_link_create();
 	i2c_master_start(cmd);
@@ -88,12 +93,15 @@ htu21d_err_t htu21d_i2c_hal_read(uint8_t address, uint8_t *reg, uint8_t *data, u
 	err += i2c_master_cmd_begin(I2C_NUM_0, cmd, I2C_MASTER_TIMEOUT_MS / portTICK_RATE_MS);
 	i2c_cmd_link_delete(cmd);
 
+
     return err == HTU21D_OK ? HTU21D_OK :  HTU21D_ERR;
 }
 
 htu21d_err_t htu21d_i2c_hal_write(uint8_t address, uint8_t *data, uint16_t count)
 {
     int err = HTU21D_OK;
+
+    //User implementation here
 
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);
@@ -107,5 +115,6 @@ htu21d_err_t htu21d_i2c_hal_write(uint8_t address, uint8_t *data, uint16_t count
 }
 
 void htu21d_i2c_hal_ms_delay(uint32_t ms) {
+    //User implementation here
     vTaskDelay(pdMS_TO_TICKS(ms));
 }
