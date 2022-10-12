@@ -36,5 +36,27 @@ See the [Getting Started Guide](https://docs.espressif.com/projects/esp-idf/en/l
 ## Example Output
 
 ```bash
-
+I (434) example_usage: htu21d initialization successful
+I (554) example_usage: Temperature: 31.9°C
+I (554) example_usage: Humidity: 86.7%
+I (2674) example_usage: Temperature: 31.9°C
+I (2674) example_usage: Humidity: 86.7%
+I (4794) example_usage: Temperature: 31.9°C
+I (4794) example_usage: Humidity: 86.7%
+I (6914) example_usage: Temperature: 31.9°C
+I (6914) example_usage: Humidity: 86.9%
+I (9034) example_usage: Temperature: 31.9°C
+I (9034) example_usage: Humidity: 86.9%
+I (11154) example_usage: Temperature: 32.0°C
+I (11154) example_usage: Humidity: 87.1%
+I (13274) example_usage: Temperature: 32.0°C
+I (13274) example_usage: Humidity: 87.2%
+I (15394) example_usage: Temperature: 32.0°C
+I (15394) example_usage: Humidity: 87.1%
+I (17514) example_usage: Temperature: 32.0°C
+I (17514) example_usage: Humidity: 87.1%
+I (19634) example_usage: Temperature: 31.9°C
+I (19634) example_usage: Humidity: 87.1%
+I (21754) example_usage: Temperature: 31.9°C
+I (21754) example_usage: Humidity: 87.1%
 ```
