@@ -33,19 +33,7 @@
 
 #include "htu21d_i2c.h" 
 #include "htu21d_i2c_hal.h" 
-
-htu21d_err_t htu21d_i2c_write_config(htu21d_config_t dt)
-{
-    uint8_t reg = REG_USER_WRITE;
-    uint8_t data[2];
-    data[0] = reg;
-    data[1] = dt.msr_res_bit7   << 7 | 
-              dt.chip_heat_en   << 2 |
-              dt.otp_reload_dis << 1 |
-              dt.msr_res_bit0;
-    htu21d_err_t err = htu21d_i2c_hal_write(I2C_ADDRESS_HTU21D, data, 2);
-    return err;
-}
+#include "crc_calc.h"
 
 htu21d_err_t htu21d_i2c_read_config(uint8_t *dt)
 {
@@ -89,6 +77,9 @@ htu21d_err_t htu21d_i2c_temp_read(float *dt)
     htu21d_err_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, data, 3);
     uint16_t data_raw = (data[0] << 8) | data[1];
     uint8_t crc = data[2];
+
+    if(crc_check(data_raw, crc) == CRC_NOTMATCH) return HTU21D_ERR;
+
     data_raw &= 0xFFFC;
     *dt = RTEMP_TO_TEMP(data_raw); 
     return err;

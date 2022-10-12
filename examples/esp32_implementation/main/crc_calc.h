@@ -29,46 +29,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef MAIN_HTU21D_I2C_HAL
-#define MAIN_HTU21D_I2C_HAL
+#ifndef MAIN_CRC_CALC
+#define MAIN_CRC_CALC
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "stdint.h"
+//CRC error macros
+#define CRC_MATCH               1
+#define CRC_NOTMATCH            0
 
-typedef enum{
-    HTU21D_ERR = -1,
-    HTU21D_OK,
-} htu21d_err_t;
-
-/**
- * @brief User implementation for I2C initialization.
- * @details To be implemented by user based on hardware platform.
- */
-htu21d_err_t htu21d_i2c_hal_init();
+//CRC macros
+#define CRC_POLYNOMIAL          0x131   // Generator Polynomial X^8 + X^5+ X^4+ 1
+#define CRC_POLYNOMIAL_WIDTH    9
 
 /**
- * @brief User implementation for I2C read.
- * @details To be implemented by user based on hardware platform.
+ * @brief Check if crc match.
+ * @details .
  */
-htu21d_err_t htu21d_i2c_hal_read(uint8_t address, uint8_t *reg, uint8_t *data, uint16_t count);
-
-/**
- * @brief User implementation for I2C write.
- * @details To be implemented by user based on hardware platform.
- */
-htu21d_err_t htu21d_i2c_hal_write(uint8_t address, uint8_t *data, uint16_t count);
-
-/**
- * @brief User implementation for milliseconds delay.
- * @details To be implemented by user based on hardware platform.
- */
-void htu21d_i2c_hal_ms_delay(uint32_t ms);
+int crc_check(uint16_t dt, uint8_t crc);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* MAIN_HTU21D_I2C_HAL */
+#endif /* MAIN_CRC_CALC */

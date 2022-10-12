@@ -89,12 +89,6 @@ typedef struct{
 
 /**
  * @brief htu21d parameter.
- * @details Setting device parameters.
- */
-htu21d_err_t htu21d_i2c_write_config(htu21d_config_t dt);
-
-/**
- * @brief htu21d parameter.
  * @details Read device parameters.
  */
 htu21d_err_t htu21d_i2c_read_config(uint8_t *dt);
