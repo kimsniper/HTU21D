@@ -40,31 +40,27 @@ extern "C" {
 
 typedef enum{
     HTU21D_ERR = -2,
-    HTU21D_CRC_ERR,
-    HTU21D_OK
+    HTU21D_CRC_ERR = -1,
+    HTU21D_OK = 0x00,
 } htu21d_err_t;
 
 /**
- * @brief User implementation for I2C initialization.
- * @details To be implemented by user based on hardware platform.
+ * @brief I2C init to be implemented by user based on hardware platform
  */
 htu21d_err_t htu21d_i2c_hal_init();
 
 /**
- * @brief User implementation for I2C read.
- * @details To be implemented by user based on hardware platform.
+ * @brief I2C read to be implemented by user based on hardware platform
  */
 htu21d_err_t htu21d_i2c_hal_read(uint8_t address, uint8_t *reg, uint8_t *data, uint16_t count);
 
 /**
- * @brief User implementation for I2C write.
- * @details To be implemented by user based on hardware platform.
+ * @brief I2C write to be implemented by user based on hardware platform
  */
 htu21d_err_t htu21d_i2c_hal_write(uint8_t address, uint8_t *data, uint16_t count);
 
 /**
- * @brief User implementation for milliseconds delay.
- * @details To be implemented by user based on hardware platform.
+ * @brief Milliseconds delay to be implemented by user based on hardware platform
  */
 void htu21d_i2c_hal_ms_delay(uint32_t ms);
 

@@ -42,24 +42,24 @@ htu21d_err_t htu21d_i2c_read_config(uint8_t *dt)
     return err;
 }
 
-htu21d_err_t htu21d_i2c_set_resolution(uint8_t dt)
+htu21d_err_t htu21d_i2c_set_resolution(htu21d_resolution_t dt)
 {
     uint8_t reg = REG_USER_WRITE;
-    uint8_t data[2], cfg_def;
-    htu21d_err_t err = htu21d_i2c_read_config(&cfg_def);
+    uint8_t data[2], cfg_mask;
+    htu21d_err_t err = htu21d_i2c_read_config(&cfg_mask);
     if (err != HTU21D_OK) return err;
     data[0] = reg;
-    data[1] = cfg_def | (dt & 0x81);
+    data[1] = (cfg_mask & 0x7E) | (dt & (1<<0)) | ((dt & (1<<1)) << 6);
     err = htu21d_i2c_hal_write(I2C_ADDRESS_HTU21D, data, 2);
     return err;
 }
 
-htu21d_err_t htu21d_i2c_get_resolution(uint8_t *dt)
+htu21d_err_t htu21d_i2c_get_resolution(htu21d_resolution_t *dt)
 {
     uint8_t reg = REG_USER_READ;
     uint8_t data;
-    htu21d_err_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, &data, 1);
-    *dt = data & 0x81;
+    htu21d_err_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, &data, 1);   
+    *dt = ((data & (1<<7)) >> 6) | (data & (1<<0));
     return err;
 }
 

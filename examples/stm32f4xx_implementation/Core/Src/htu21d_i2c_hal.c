@@ -31,9 +31,9 @@
 
 #include "htu21d_i2c_hal.h" 
 
-//Hardware Specific Components
+/* Hardware Specific Components */
 #include "stm32f4xx_hal.h"
-//I2C User Defines
+/* I2C User Defines */
 I2C_HandleTypeDef hi2c1;
 
 htu21d_err_t htu21d_i2c_hal_init()

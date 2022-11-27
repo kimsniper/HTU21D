@@ -53,14 +53,20 @@ typedef struct{
     uint8_t msr_res_bit0 : 1;
 } htu21d_config_t;
 
+typedef enum{
+    REG_RESOLUTION_HUM12_TEMP14 = 0x00,
+    REG_RESOLUTION_HUM8_TEMP12 = 0x01,
+    REG_RESOLUTION_HUM10_TEMP13 = 0x02,
+    REG_RESOLUTION_HUM11_TEMP11 = 0x03,
+} htu21d_resolution_t;
+
 /**
- * @brief htu21d device address.
- * @details htu21d I2C slave address.
+ * @brief HTU21D I2C slave address
  */
 #define I2C_ADDRESS_HTU21D              0x40
 
 /**
- * @brief htu21d command code registers.
+ * @brief HTU21D command code registers.
  * @details R/W Command registers
  */
 #define REG_RTEMP_READ_HOLD             0xE3
@@ -72,54 +78,38 @@ typedef struct{
 #define REG_SOFT_RESET                  0xFE
 
 /**
- * @brief htu21d resolution code registers.
- * @details Resolution Command write registers
- */
-#define REG_RESOLUTION_HUM12_TEMP14     0x00
-#define REG_RESOLUTION_HUM8_TEMP12      0x01
-#define REG_RESOLUTION_HUM10_TEMP13     0x80
-#define REG_RESOLUTION_HUM11_TEMP11     0x81
-
-/**
- * @brief htu21d formula.
- * @details Humidity and Temperature conversion formula
+ * @brief HTU21D Humidity and Temperature conversion formula
  */
 #define RHUM_TO_HUM(_rhum)              (125 * (_rhum/(pow(2,16)))) - 6
 #define RTEMP_TO_TEMP(_rtemp)           (175.72 * (_rtemp/(pow(2,16)))) - 46.85
 
 /**
- * @brief htu21d parameter.
- * @details Read device parameters.
+ * @brief Read HTU21D parameters
  */
 htu21d_err_t htu21d_i2c_read_config(uint8_t *dt);
 
 /**
- * @brief htu21d parameter.
- * @details Set device resolution.
+ * @brief Set HTU21D resolution
  */
-htu21d_err_t htu21d_i2c_set_resolution(uint8_t dt);
+htu21d_err_t htu21d_i2c_set_resolution(htu21d_resolution_t dt);
 
 /**
- * @brief htu21d parameter.
- * @details Read device resolution.
+ * @brief Read HTU21D resolution
  */
-htu21d_err_t htu21d_i2c_get_resolution(uint8_t *dt);
+htu21d_err_t htu21d_i2c_get_resolution(htu21d_resolution_t *dt);
 
 /**
- * @brief htu21d reset.
- * @details Resetting device power.
+ * @brief HTU21D reset
  */
 htu21d_err_t htu21d_i2c_reset();
 
 /**
- * @brief htu21d sensor temperature read.
- * @details Read temperature in deg C.
+ * @brief HTU21D temperature read in deg C
  */
 htu21d_err_t htu21d_i2c_temp_read(float *dt);
 
 /**
- * @brief htu21d sensor relarive humidity read.
- * @details Read relative humidity in %.
+ * @brief HTU21D relative humidity read
  */
 htu21d_err_t htu21d_i2c_hum_read(float *dt);
 
