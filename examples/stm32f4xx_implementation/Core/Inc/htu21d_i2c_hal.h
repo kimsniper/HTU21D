@@ -39,8 +39,8 @@ extern "C" {
 #include "stdint.h"
 
 typedef enum{
-    HTU21D_ERR = -2,
-    HTU21D_CRC_ERR = -1,
+    HTU21D_CRC_ERR = -2,
+    HTU21D_ERR = -1,
     HTU21D_OK = 0x00,
 } htu21d_err_t;
 

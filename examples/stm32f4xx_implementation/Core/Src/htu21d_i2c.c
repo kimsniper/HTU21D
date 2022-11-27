@@ -29,8 +29,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "math.h"
-
 #include "htu21d_i2c.h" 
 #include "htu21d_i2c_hal.h" 
 #include "crc_calc.h"
@@ -47,7 +45,10 @@ htu21d_err_t htu21d_i2c_set_resolution(htu21d_resolution_t dt)
     uint8_t reg = REG_USER_WRITE;
     uint8_t data[2], cfg_mask;
     htu21d_err_t err = htu21d_i2c_read_config(&cfg_mask);
-    if (err != HTU21D_OK) return err;
+    
+    if (err != HTU21D_OK) 
+        return err;
+
     data[0] = reg;
     data[1] = (cfg_mask & 0x7E) | (dt & (1<<0)) | ((dt & (1<<1)) << 6);
     err = htu21d_i2c_hal_write(I2C_ADDRESS_HTU21D, data, 2);
@@ -78,7 +79,8 @@ htu21d_err_t htu21d_i2c_temp_read(float *dt)
     uint16_t data_raw = (data[0] << 8) | data[1];
     uint8_t crc = data[2];
 
-    if(crc_check(data_raw, crc) == CRC_NOTMATCH) return HTU21D_CRC_ERR;
+    if(crc_check(data_raw, crc) == CRC_NOTMATCH) 
+        return HTU21D_CRC_ERR;
 
     data_raw &= 0xFFFC;
     *dt = RTEMP_TO_TEMP(data_raw); 
@@ -93,7 +95,8 @@ htu21d_err_t htu21d_i2c_hum_read(float *dt)
     uint16_t data_raw = (data[0] << 8) | data[1];
     uint8_t crc = data[2];
 
-    if(crc_check(data_raw, crc) == CRC_NOTMATCH) return HTU21D_CRC_ERR;
+    if(crc_check(data_raw, crc) == CRC_NOTMATCH) 
+        return HTU21D_CRC_ERR;
 
     data_raw &= 0xFFFC;
     *dt = RHUM_TO_HUM(data_raw);
