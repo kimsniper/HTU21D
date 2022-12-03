@@ -33,18 +33,18 @@
 #include "htu21d_i2c_hal.h" 
 #include "crc_calc.h"
 
-htu21d_err_t htu21d_i2c_read_config(uint8_t *dt)
+int16_t htu21d_i2c_read_config(uint8_t *dt)
 {
     uint8_t reg = REG_USER_READ;
-    htu21d_err_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, dt, 1);
+    int16_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, dt, 1);
     return err;
 }
 
-htu21d_err_t htu21d_i2c_set_resolution(htu21d_resolution_t dt)
+int16_t htu21d_i2c_set_resolution(htu21d_resolution_t dt)
 {
     uint8_t reg = REG_USER_WRITE;
     uint8_t data[2], cfg_mask;
-    htu21d_err_t err = htu21d_i2c_read_config(&cfg_mask);
+    int16_t err = htu21d_i2c_read_config(&cfg_mask);
     
     if (err != HTU21D_OK) 
         return err;
@@ -55,27 +55,27 @@ htu21d_err_t htu21d_i2c_set_resolution(htu21d_resolution_t dt)
     return err;
 }
 
-htu21d_err_t htu21d_i2c_get_resolution(htu21d_resolution_t *dt)
+int16_t htu21d_i2c_get_resolution(htu21d_resolution_t *dt)
 {
     uint8_t reg = REG_USER_READ;
     uint8_t data;
-    htu21d_err_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, &data, 1);   
+    int16_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, &data, 1);   
     *dt = ((data & (1<<7)) >> 6) | (data & (1<<0));
     return err;
 }
 
-htu21d_err_t htu21d_i2c_reset()
+int16_t htu21d_i2c_reset()
 {
     uint8_t reg = REG_SOFT_RESET;
-    htu21d_err_t err = htu21d_i2c_hal_write(I2C_ADDRESS_HTU21D, &reg, 1);
+    int16_t err = htu21d_i2c_hal_write(I2C_ADDRESS_HTU21D, &reg, 1);
     return err;
 } 
 
-htu21d_err_t htu21d_i2c_temp_read(float *dt)
+int16_t htu21d_i2c_temp_read(float *dt)
 {
     uint8_t reg = REG_RTEMP_READ_HOLD;
     uint8_t data[3];
-    htu21d_err_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, data, 3);
+    int16_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, data, 3);
     uint16_t data_raw = (data[0] << 8) | data[1];
     uint8_t crc = data[2];
 
@@ -87,11 +87,11 @@ htu21d_err_t htu21d_i2c_temp_read(float *dt)
     return err;
 }
 
-htu21d_err_t htu21d_i2c_hum_read(float *dt)
+int16_t htu21d_i2c_hum_read(float *dt)
 {
     uint8_t reg = REG_RHUM_READ_HOLD;
     uint8_t data[3];
-    htu21d_err_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, data, 3);
+    int16_t err = htu21d_i2c_hal_read(I2C_ADDRESS_HTU21D, &reg, data, 3);
     uint16_t data_raw = (data[0] << 8) | data[1];
     uint8_t crc = data[2];
 

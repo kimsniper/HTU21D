@@ -43,9 +43,9 @@
 #define I2C_MASTER_RX_BUF_DISABLE   0                          /*!< I2C master doesn't need buffer */
 #define I2C_MASTER_TIMEOUT_MS       1000
 
-htu21d_err_t htu21d_i2c_hal_init()
+int16_t htu21d_i2c_hal_init()
 {
-    int err = HTU21D_OK;
+    int16_t err = HTU21D_OK;
 
     //User implementation here
 
@@ -68,9 +68,9 @@ htu21d_err_t htu21d_i2c_hal_init()
     return err == HTU21D_OK ? HTU21D_OK :  HTU21D_ERR;
 }
 
-htu21d_err_t htu21d_i2c_hal_read(uint8_t address, uint8_t *reg, uint8_t *data, uint16_t count)
+int16_t htu21d_i2c_hal_read(uint8_t address, uint8_t *reg, uint8_t *data, uint16_t count)
 {
-    int err = HTU21D_OK;
+    int16_t err = HTU21D_OK;
 
     //User implementation here
 
@@ -97,9 +97,9 @@ htu21d_err_t htu21d_i2c_hal_read(uint8_t address, uint8_t *reg, uint8_t *data, u
     return err == HTU21D_OK ? HTU21D_OK :  HTU21D_ERR;
 }
 
-htu21d_err_t htu21d_i2c_hal_write(uint8_t address, uint8_t *data, uint16_t count)
+int16_t htu21d_i2c_hal_write(uint8_t address, uint8_t *data, uint16_t count)
 {
-    int err = HTU21D_OK;
+    int16_t err = HTU21D_OK;
 
     //User implementation here
 

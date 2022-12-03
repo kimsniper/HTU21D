@@ -61,6 +61,11 @@ typedef enum{
 } htu21d_resolution_t;
 
 /**
+ * @brief HTU21D error code macros
+ */
+#define HTU21D_CRC_ERR                  -2
+
+/**
  * @brief HTU21D I2C slave address
  */
 #define I2C_ADDRESS_HTU21D              0x40
@@ -86,32 +91,32 @@ typedef enum{
 /**
  * @brief Read HTU21D parameters
  */
-htu21d_err_t htu21d_i2c_read_config(uint8_t *dt);
+int16_t htu21d_i2c_read_config(uint8_t *dt);
 
 /**
  * @brief Set HTU21D resolution
  */
-htu21d_err_t htu21d_i2c_set_resolution(htu21d_resolution_t dt);
+int16_t htu21d_i2c_set_resolution(htu21d_resolution_t dt);
 
 /**
  * @brief Read HTU21D resolution
  */
-htu21d_err_t htu21d_i2c_get_resolution(htu21d_resolution_t *dt);
+int16_t htu21d_i2c_get_resolution(htu21d_resolution_t *dt);
 
 /**
  * @brief HTU21D reset
  */
-htu21d_err_t htu21d_i2c_reset();
+int16_t htu21d_i2c_reset();
 
 /**
  * @brief HTU21D temperature read in deg C
  */
-htu21d_err_t htu21d_i2c_temp_read(float *dt);
+int16_t htu21d_i2c_temp_read(float *dt);
 
 /**
  * @brief HTU21D relative humidity read
  */
-htu21d_err_t htu21d_i2c_hum_read(float *dt);
+int16_t htu21d_i2c_hum_read(float *dt);
 
 #ifdef __cplusplus
 }
